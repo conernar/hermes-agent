@@ -1,0 +1,7 @@
+name: vertex
+version: 1.0.0
+description: "Google Vertex AI video generation (Veo). Service-account or ADC auth."
+author: conernar
+kind: backend
+requires_env:
+  - VERTEX_CREDENTIALS_PATH

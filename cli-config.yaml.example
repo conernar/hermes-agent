@@ -979,6 +979,43 @@ platform_toolsets:
 #       log_level: "info"       # audit verbosity
 
 # =============================================================================
+# Image / Video Generation
+# =============================================================================
+# The image_generate and video_generate tools dispatch to a pluggable backend
+# (plugins/image_gen/, plugins/video_gen/). Pick one per tool with the
+# provider key; model selects the default model for that backend.
+#
+# Google Vertex AI backend: reuses the same service-account credentials as
+# the vertex chat provider — set VERTEX_CREDENTIALS_PATH (or
+# GOOGLE_APPLICATION_CREDENTIALS) in .env and vertex.project_id below.
+# Model ids pass through unvalidated, so newly released Google models work
+# by changing the model key alone; the "google/" publisher prefix used by
+# the vertex chat provider is accepted and normalized.
+#
+# image_gen:
+#   provider: "vertex"
+#   model: "gemini-3-pro-image-preview"  # or e.g. google/gemini-3.1-flash-image
+#   vertex:
+#     # model: ""                # backend-level default (used when image_gen.model
+#     #                          # holds another backend's id); VERTEX_IMAGE_MODEL env var also works
+#     # region: ""               # "" = global for gemini-*, us-central1 for imagen-*
+#     # api: ""                  # force routing for unknown model prefixes:
+#     #                          # "generate_content" (gemini-style) | "predict" (imagen-style)
+#     # timeout_seconds: 300
+#     # image_size: ""           # gemini-* only, e.g. "2K" / "4K" (model-dependent)
+#     # person_generation: ""    # e.g. "allow_adult" (imagen-* only)
+#
+# video_gen:
+#   provider: "vertex"
+#   model: "veo-3.1-generate-001"  # veo-* -> long-running predict; gemini-* (Omni) -> Interactions API
+#   vertex:
+#     # region: "us-central1"    # veo-* only; gemini-* video is always served globally
+#     # timeout_seconds: 600     # veo poll budget / omni HTTP timeout
+#     # poll_interval_seconds: 10
+#     # storage_uri: ""          # gs:// prefix to write veo outputs instead of inline bytes
+#     # person_generation: ""    # e.g. "allow_adult"
+
+# =============================================================================
 # Text-to-Speech
 # =============================================================================
 # TTS defaults to Edge TTS unless changed in ~/.hermes/config.yaml.
